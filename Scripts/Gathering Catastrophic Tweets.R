@@ -13,7 +13,7 @@ library(dplyr)
 Lexicon <- read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/Lexicon.xlsx")
 #View(Lexicon)
 lexicon<-Lexicon[,2]
-notepad<-data.frame()
+notepad<-c()
 w<-0
 #Cleaning Vowels Lexicon
 grclean1<-c()
@@ -138,7 +138,7 @@ for(e in 1:length(fileslist)){
 )
       }
       if(o>0){
-        notepad[w]<-data[i]
+        notepad[w]<-data[f]
       }
     }
   pctg <- paste(round(e/n_iter *100, 0), "% completed")
