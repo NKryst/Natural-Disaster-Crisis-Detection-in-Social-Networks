@@ -10,9 +10,9 @@ library(openxlsx)
 library(dplyr)
 #Sentiment Analysis
 #Import Words indicating catastrophes
-Lexicon <- read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/Lexicon.xlsx")
+Keywords <- read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/keywords.xlsx")
 #View(Lexicon)
-lexicon<-Lexicon[,2]
+lexicon<-Keywords[,2]
 notepad<-c()
 w<-0
 #Cleaning Vowels Lexicon
@@ -78,9 +78,9 @@ for(e in 1:length(fileslist)){
   url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
   data<-gsub(pattern = url_pattern,"",data)
   #removing english strings
-  data<-gsub("[a-z]|[A-Z]","",data)
+  #data<-gsub("[a-z]|[A-Z]","",data)
   #removing emojis
-  data<-gsub("<U|[$-_@.&+]|[0-9]|F|[0-9]>","",data)
+  #data<-gsub("<U|[$-_@.&+]|[0-9]|F|[0-9]>","",data)
   #Pops up a window to choose the txt file we want
   #Tokenization techniques
   tokens <-tokenize_words(data , lowercase = TRUE, stopwords = stop_words , strip_punct = TRUE , strip_numeric = TRUE)
