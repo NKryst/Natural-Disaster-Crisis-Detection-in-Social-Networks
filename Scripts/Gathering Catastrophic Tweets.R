@@ -139,8 +139,8 @@ for(e in 1:length(fileslist)){
       } 
       if(o!=0){
         print(o)
-        print(data[f])
-        notepad[w]<-data[f]
+        print(data[count])
+        notepad[w]<-data[count]
         w<-w+1
       }
     }
