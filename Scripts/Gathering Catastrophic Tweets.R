@@ -14,7 +14,7 @@ library(tidyverse)
 Keywords <- read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/keywords.xlsx")
 #View(Lexicon)
 lexicon<-Keywords[,2]
-notepad<-tibble()
+notepad<-c()
 w<-1
 v<-0
 #Cleaning Vowels Lexicon
@@ -139,11 +139,7 @@ for(e in 1:length(fileslist)){
 )
       } 
       if(o!=0){
-        if(v=i){
-        v = i
-        next
-        }
-        
+
         print(o)
         print(i)
         print(data[i])
