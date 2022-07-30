@@ -8,13 +8,14 @@ library(tm)
 library(bpa)
 library(openxlsx)
 library(dplyr)
+library(tidyverse)
 #Sentiment Analysis
 #Import Words indicating catastrophes
 Keywords <- read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/keywords.xlsx")
 #View(Lexicon)
 lexicon<-Keywords[,2]
-notepad<-c()
-w<-0
+notepad<-tibble()
+w<-1
 #Cleaning Vowels Lexicon
 grclean1<-c()
 grclean2<-c()
@@ -71,8 +72,7 @@ for(e in 1:length(fileslist)){
   } else if (encoding_check == ""){
     next}
   #Setting Stop Words and Text cleaning
-  greek_stop_words_initial<-read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/greek_stop_words.xlsx")
-  greek_stop_words<-greek_stop_words_initial[,2]
+  greek_stop_words<-c("εκει","https","άλλους","άλλο","καν","ειστε","άλλη","κάποια","πάνω","κάτω","t.co","u","0001f92a","εχεις","αλλα","άλλα","τι","κατά","γιατι","γιατί","αλλά","ως","μέσα","ειχε","όπως","όλο","ο","α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω","a","b","c","d","e","f","να","ναι","μας","τετοιες","ήταν","ηταν","αυτο","ας","εγω","εχει","ή","η","εκεί","και","λίγο","λιγο","πάλι","μονο","απ","μόνο","αυτά","αυτή","αυτα","αυτη","εγώ","ούτε","υπάρχει","-","κάνει","στους","κάθε","πρέπει","τώρα","λέει","όχι","ήταν","amp","δύο","σαν","το","να","για","του","είναι","ειναι","στις","έχω","μετά","μη","κάτι","είσαι","πολύ","σήμερα","καλημέρα","όλα","ολα","όλοι","ολοι","όλες","ολες","πολυ","πολλή","πολλά","πολλη","πολλα","την","με","του","της","τα","που" , "στο","είναι", "θα", "τον","σε","από","απο", "μου","στην","οι", "τους","μας","τη", "των", "στη","στα","τις", "ότι","οτι", "σου","στον","αλλά","μια", "τι","αν","σας","έχει","ένα","αυτό","δε","όταν","κι", "γιατί", "πως","πιο", "μην", "έχουν", "ρε","μόνο")
   stop_words <- append(greek_stop_words , stopwords::stopwords(language = "en"))
   #removing urls
   url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
@@ -121,7 +121,7 @@ for(e in 1:length(fileslist)){
   z<-c()
   a<-0
   #Select the String Matching Technique
-  str_match_meth<-"jw"
+  str_match_meth<-"hamming"
   #Starting to string match for each tweet's tokens and assigning sentiment values according to Sentiment Lexi
   for (i in 1:length((clean_tokens)))   {
     o<-c()
@@ -136,9 +136,12 @@ for(e in 1:length(fileslist)){
         #String Matching Function amatch() returns the position of word in clean_lexicon which is the First Column of Greek Sentiment Lexi
         o<-amatch(clean_tokens[[y]][p], clean_lexicon, method = str_match_meth, nomatch = 0, nthread = getOption("sd_num_thread")
 )
-      }
-      if(o>0){
+      } 
+      if(o!=0){
+        print(o)
+        print(data[f])
         notepad[w]<-data[f]
+        w<-w+1
       }
     }
   pctg <- paste(round(e/n_iter *100, 0), "% completed")
