@@ -11,12 +11,15 @@ library(dplyr)
 library(tidyverse)
 #Sentiment Analysis
 #Import Words indicating catastrophes
-Keywords <- read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/keywords.xlsx")
+Keywords <- read_excel("C:/Users/nickr/OneDrive/Υπολογιστής/Repositories/Natural-Disaster-Crisis-Detection-in-Social-Networks/Vocabulary/keywords.xlsx")[,2]
 #View(Lexicon)
-lexicon<-Keywords[,2]
+lexicon<-Keywords
 notepad<-c()
+history_search<-c()
+findings<-c()
 w<-1
 v<-0
+iteraror<-1
 #Cleaning Vowels Lexicon
 grclean1<-c()
 grclean2<-c()
@@ -47,7 +50,6 @@ clean_lexicon<-grclean10
 #data_csv<-read.csv(file.choose(),sep=",",skipNul = TRUE)
 fileslist <- choose.files()
 fileslist <-sort(fileslist)
-mood<-matrix(nrow = length(fileslist), ncol = 7)
 n_iter <- length(fileslist)
 pb <- winProgressBar(title = "Windows progress bar", # Window title
                      label = "Percentage completed", # Window label
@@ -114,15 +116,8 @@ for(e in 1:length(fileslist)){
       clean_tokens[[f]][g]<-clean10[count]
     }
   }
-  #General
-  #Setting Up Variables for Outputs of the code
-  all_sentiments<-matrix(nrow = length(clean_tokens), ncol = 7)
-  o<-c()
-  s<-0
-  z<-c()
-  a<-0
   #Select the String Matching Technique
-  str_match_meth<-"hamming"
+  str_match_meth<-"jw"
   #Starting to string match for each tweet's tokens and assigning sentiment values according to Sentiment Lexi
   for (i in 1:length((clean_tokens)))   {
     o<-c()
@@ -135,23 +130,22 @@ for(e in 1:length(fileslist)){
       a<-nchar(clean_tokens[[y]][p])
       if(is.na(a)!=TRUE){
         #String Matching Function amatch() returns the position of word in clean_lexicon which is the First Column of Greek Sentiment Lexi
-        o<-amatch(clean_tokens[[y]][p], clean_lexicon, method = str_match_meth, nomatch = 0, nthread = getOption("sd_num_thread")
-)
-      } 
-      if(o!=0){
-
-        print(o)
-        print(i)
-        print(data[i])
-        notepad[w]<-data[i]
-        w<-w+1
+        o<-amatch(clean_tokens[[y]][p], clean_lexicon, method = str_match_meth, nomatch = 0, nthread = getOption("sd_num_thread"))
+        if(o!=0){
+          history_search[w]<-i
+          w<-w+1
+          } 
+        }
       }
     }
+  for (iterator in 1:length(unique(history_search))) {
+    notepad[iterator]<-data[unique(history_search)[iterator]]
+  }
   pctg <- paste(round(e/n_iter *100, 0), "% completed")
   setWinProgressBar(pb, e, label = pctg) # The label will override the label set on the
   # winProgressBar function
   }
-}
+
 title<-paste("data_",str_match_meth,"revised.csv",sep = "")
 write.csv2(mood, file = title)
 close(pb) 
