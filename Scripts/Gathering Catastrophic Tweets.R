@@ -144,10 +144,9 @@ for(e in 1:length(fileslist)){
   pctg <- paste(round(e/n_iter *100, 0), "% completed")
   setWinProgressBar(pb, e, label = pctg) # The label will override the label set on the
   # winProgressBar function
-  }
-
-title<-paste("data_",str_match_meth,"revised.csv",sep = "")
-write.csv2(mood, file = title)
+}
+title<-paste("tweets_indicate_catastrphe_using_2",str_match_meth,"revised.csv",sep = "")
+write.csv2(notepad, file = title)
 close(pb) 
 #saveWorkbook(wb = hi,file = excelName)
 #excelName<-paste(Sys.Date(),"moodTwitter.xlsx",sep = "_")
